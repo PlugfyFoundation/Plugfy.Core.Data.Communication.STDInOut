@@ -15,6 +15,7 @@
     <RepositoryUrl>https://github.com/PlugfyFoundation/Plugfy.Core.Data.Communication.STDInOut</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
