@@ -1,127 +1,40 @@
  
 ![logo_plugfy_core_foundation_256x55](https://raw.githubusercontent.com/PlugfyFoundation/Plugfy.Core/refs/heads/main/plugfy-core-fundation-header.png)
 
-# Plugfy Core Extension Library Runner for .NET
+# Plugfy.Core.Data.Communication.STDInOut
 
 ## Overview
-The **Plugfy Core Extension Library Runner for .NET** is a command-line tool designed to dynamically load and execute .NET assemblies. It facilitates inter-process communication and allows users to list available assemblies, obtain detailed metadata, and execute methods within assemblies.
-
-This tool is part of the **Plugfy Core** ecosystem, providing a standardized approach to managing dynamic module execution in .NET applications.
+The **STDInOut** extension of the Plugfy Core Data Communication module offers a straightforward and efficient method for handling data communication through standard input/output channels. This extension is designed to facilitate inter-component communication within applications by utilizing the most basic form of inter-process communication provided by the operating system.
 
 ---
 
 ## Features
-- **List Available Assemblies**: Retrieve a list of all dynamically loadable assemblies.
-- **Get Assembly Metadata**: Extract class, method, event, and field details from assemblies.
-- **Execute Methods Dynamically**: Invoke methods within loaded assemblies, supporting constructor parameters and runtime event subscription.
-- **Interactive Mode**: Run the tool interactively for real-time command execution.
-- **Multiple Communication Modes**: Supports different inter-process communication mechanisms (e.g., STDInOut, NamedPipes).
-- **Extensible Logging and Caller Communication**: Configurable logging and communication extensions via JSON parameters.
+- **Simple Integration**: Easily integrates into any .NET application that requires inter-process communication via standard console inputs and outputs.
+- **Lightweight Communication Protocol**: Utilizes simple JSON serialization for data transfer, making it both lightweight and easy to implement.
+- **Cross-Platform Compatibility**: Works across different operating systems where the .NET runtime is supported, providing a universal solution for console-based data communication.
+- **Asynchronous Communication Support**: Supports asynchronous operations to enhance performance and responsiveness in applications.
 
 ---
 
 ## Installation
-### **Prerequisites**
-- .NET SDK 6.0 or later
-- Windows, Linux, or macOS
-
-### **Building the Project**
-Clone the repository and navigate to the project folder:
-```sh
- git clone https://github.com/plugfy/plugfy-core-extension-library-runner-dotnet.git
- cd plugfy-core-extension-library-runner-dotnet
-```
-
-Build the project using .NET CLI:
-```sh
- dotnet build -c Release
-```
-
-Run the executable from the output directory:
-```sh
- dotnet run -- list
-```
-
+To integrate the SSTDInOut Communication Extension into your project, follow these steps:
+1. Clone the repository to your local machine.
+2. Include the project in your solution or reference the built assembly directly.
+3. Ensure your project targets .NET Framework 8 or higher.
 ---
 
 ## Usage
-### **Command Structure**
-The tool uses a **command-based interface** where commands are specified as verbs:
-```sh
- Plugfy.Core.Extension.Library.Runner.DotNet8 <command> [options]
-```
+To implement the STDInOut communication extension in your project, create an instance of the `STDInOut` class and use it to send or receive messages. Initialize the communication with required configurations, if any.
 
-### **Available Commands**
-#### **1. Listing Available Assemblies**
-```sh
- Plugfy.Core.Extension.Library.Runner.DotNet8 list
-```
-**Options:**
-- `-t, --communicationType` *(optional)*: Communication method (e.g., `STDInOut`, `NamedPipes`)
-- `-i, --interactive` *(optional)*: Enables interactive mode
-- `-c, --caller` *(optional)*: Caller extensions configuration in JSON format
-- `-l, --log` *(optional)*: Log extensions configuration in JSON format
+Example:
+```csharp
+var stdInOut = new STDInOut();
+await stdInOut.InitializeAsync(null); // Initialize without specific configuration
+await stdInOut.StartListeningAsync();  // Start listening for incoming data
 
-#### **2. Getting Assembly Information**
-```sh
- Plugfy.Core.Extension.Library.Runner.DotNet8 info '{"AssemblyName": "MyLibrary.dll"}'
+// Sending data
+await stdInOut.SendDataAsync(new { Message = "Hello, World!" });
 ```
-**Options:**
-- `-t, --communicationType` *(optional)*: Communication method
-- `-i, --interactive` *(optional)*: Enables interactive mode
-- `-c, --caller` *(optional)*: Caller extensions configuration in JSON format
-- `-l, --log` *(optional)*: Log extensions configuration in JSON format
-
-#### **3. Running a Method in an Assembly**
-```sh
- Plugfy.Core.Extension.Library.Runner.DotNet8 run '{"AssemblyName": "MyLibrary.dll", "Class": "MyNamespace.MyClass", "Method": "MyMethod", "Parameters": ["arg1", 42]}'
-```
-**Options:**
-- `-t, --communicationType` *(optional)*: Communication method
-- `-i, --interactive` *(optional)*: Enables interactive mode
-- `-c, --caller` *(optional)*: Caller extensions configuration in JSON format
-- `-l, --log` *(optional)*: Log extensions configuration in JSON format
-
----
-
-## Configuration
-The application relies on `appsettings.json` for configuration. Below is an example:
-```json
-{
-  "Extensions": {
-    "Communications": {
-      "STDInOut": {
-        "LibrariesPath": "./Extensions/STDInOut"
-      },
-      "NamedPipes": {
-        "LibrariesPath": "./Extensions/NamedPipes"
-      }
-    }
-  },
-  "LibrariesPath": "./Assemblies"
-}
-```
-### **Customizing Communication Extensions**
-- Define additional communication types in `appsettings.json`.
-- Ensure the corresponding `.dll` exists in the specified `LibrariesPath`.
-
----
-
-## Example Workflows
-### **Example 1: Listing Assemblies**
-```sh
-Plugfy.Core.Extension.Library.Runner.DotNet8 list -t NamedPipes
-```
-### **Example 2: Retrieving Assembly Information**
-```sh
-Plugfy.Core.Extension.Library.Runner.DotNet8 info '{"AssemblyName": "MyLibrary.dll"}'
-```
-### **Example 3: Executing a Method in an Assembly**
-```sh
-Plugfy.Core.Extension.Library.Runner.DotNet8 run '{"AssemblyName": "MyLibrary.dll", "Class": "MyNamespace.MyClass", "Method": "SayHello", "Parameters": ["World"]}'
-```
-
----
 
 ## License
 This project is licensed under the **GNU General Public License v3.0**. See [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html) for details.
